@@ -1,0 +1,5 @@
+Django==1.6.5
+django_compressor
+django-widget-tweaks
+pycrypto
+requests

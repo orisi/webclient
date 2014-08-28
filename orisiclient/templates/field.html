@@ -1,0 +1,14 @@
+{# inc/field.html #}
+{% load widget_tweaks %}
+<div class="form-group {% if field.errors %}has-error{% endif %} {% if narrow %}narrow{% endif %}">
+  {% if not hide_label %}
+    <label class="control-label {% if close_label %}no-bottom-margin{% endif %}">
+      {% if not hide_errors %}
+        {% if field.errors %}
+          {{field.errors}}
+        {% endif %}
+      {% endif %}
+    </label>
+  {% endif %}
+  {% render_field field|add_class:"form-control" placeholder=field.label %}
+</div>

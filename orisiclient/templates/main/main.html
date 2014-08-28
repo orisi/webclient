@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style type="text/css">
+  @media (min-width: 768px) {
+    .container {
+      width:100%;
+      max-width: 730px;
+    }
+  }
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="jumbotron center">
+      <h1 class="center">Orisi Online Client</h1>
+      <p class="center">Check how Orisi works without installing anything!</p>
+      <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Get Started</a>
+      <p class="center">.. or <a href="{% url 'main:faq' %}">learn more</a>...</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

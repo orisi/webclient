@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style type="text/css">
+  @media (min-width: 768px) {
+    .container {
+      width:100%;
+      max-width: 730px;
+    }
+  }
+</style>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="jumbotron">
+      <div id="before" class="center">
+        <h2>Creating timelock...</h2>
+        <p>Waiting for Oracles to respond</p>
+        <div class="results">
+          <div id="circleG">
+            <div id="circleG_1" class="circleG">
+            </div>
+            <div id="circleG_2" class="circleG">
+            </div>
+            <div id="circleG_3" class="circleG">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="afterSuccess" style="display:none;" class="center">
+        <h1>Timelock Created!</h1>
+        <hr>
+        <p>Please send your timelock money on <span id="address" class="strong"></span>.</p>
+        <p>Send amount ending with <span class="tx_mark strong"></span>. For example: 
+        <b>0.1000<span class="tx_mark"></span></b>. That way we recognize your transaction.</p>
+        <hr>
+        <h2>How much would you like to send?</h2>
+        <div class="row">
+          <div class="col-xs-5" style="padding-right: 0px;">
+            <div class="form-group" style="margin-top:5px;"> 
+              <input id="firstInput" class="form-control" min=0 placeholder="Amount in BTC" type="number" step="0.00000001"/>
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <div class="center">
+              <p style="font-size: 43px; color: gray;">
+              <span class="glyphicon glyphicon-arrow-right"></span>
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-5" style="padding-left: 0px;">
+            <div class="form-group" style="margin-top:5px;">
+              <input id="secondInput" class="form-control" min=0 placeholder="How much should be sent" type="number" step="0.00000001" disabled/>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+        <p>Oracles will wait for your transaction for no more than <b>30</b> minutes</p>
+      </div>
+      <div id="afterFailure" style="display:none;" class="center">
+        <h2>Please use different address</h2>
+        <p>Oracle might be overwhelmed or you might just hit the conflict
+        with other user. Please either try again later, or use different 
+        return address.</p>
+        <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Create New</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+function checkResults(results) {
+  console.log(results);
+  if (results['result'] == 'success') {
+    clearInterval(tt);
+
+    if (results['created'] == 'yes'){
+      r = results['results'][0];
+
+      address = r['addr'];
+      mark = r['mark'];
+      time = r['time'];
+
+      $('#address').html(address);
+      $('.tx_mark').each(function(){
+          $(this).html(mark);
+      });
+      $('#time').html(time);
+
+      $('#firstInput').on('input', function(){
+        value = $(this).val();
+        if (value) {
+          console.log(typeof(value));
+          console.log(parseFloat(value).toFixed(4));
+          sendAmount = parseFloat(value).toFixed(4);
+          $('#secondInput').val(sendAmount + mark);
+        }
+      });
+
+      $('#before').remove();
+      $('#afterSuccess').css('display', 'block');
+    } else {
+      $('#before').remove();
+      $('#afterFailure').css('display', 'block');
+    }
+  }
+}
+
+function getResults() { 
+  $.ajax({
+    url: '/get_timelock_for_address?message_id={{ta.message_id}}',
+    type: "get",
+  }).done(function(data){
+    checkResults(data);
+  });
+}
+
+tt = setInterval(getResults, 1000);
+
+</script>
+
+{% endblock %}

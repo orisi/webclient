@@ -1,0 +1,13 @@
+{
+    "version": "2",
+  "org_fee": "0.00006",
+  "org_address": "15PAcEwJQdH9JVti9w4q8vtMXZhW36JCm9",
+    "nodes": [
+        {
+            "pubkey": "03429116ecdd384757219a37e62a5154236eb334faafae8f910fbb9e015f695e0a",
+            "address": "1BzHARiQTgxYWq8YFDVnnAFLxgpYvirrdf",
+            "fee": "0.00003",
+        "bm": "BM-2cV7EKL8VmwPXbnjkDafBgnEMs64jVV69b"
+        }
+    ]
+}
