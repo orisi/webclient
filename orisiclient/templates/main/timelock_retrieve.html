@@ -81,7 +81,16 @@ function checkResults(results) {
 
       address = r['addr'];
       mark = r['mark'];
+      mark = mark.toString();
       time = r['time'];
+
+      prefix = "";
+      diff = 4 - mark.length;
+      for (var i = 0; i < diff; i ++) {
+        prefix += "0";
+      }
+
+      mark = prefix + mark;
 
       $('#address').html(address);
       $('.tx_mark').each(function(){
