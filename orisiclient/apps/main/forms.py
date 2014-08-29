@@ -5,6 +5,6 @@ class TimelockForm(forms.Form):
   # charter_url = forms.CharField()
   locktime = forms.IntegerField(
       min_value = 1,
-      label="On how many minutes do you want to set a lock?")
+      label="How long should the money stay locked? In minutes")
   return_address = BCAddressField(
-      label="Your Bitcoin return address")
+      label="Where should the money go after being unlocked? Your BTC return address")

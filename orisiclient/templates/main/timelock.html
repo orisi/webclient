@@ -11,16 +11,22 @@
 </style>
 <div class="row">
   <div class="col-xs-12">
-    <div class="jumbotron center">
+    <div class="jumbotron text-center center">
       <h1>Timelock Contract</h1>
-      <p>Let's perform our first timelock transaction</p>
+      <p>Let's perform our first timelock transaction.
+      </p>
       <form method="post">
         {% csrf_token %}
 
         {% include "field.html" with field=form.locktime %}
         {% include "field.html" with field=form.return_address %}
 
-        <input type="submit" class="btn btn-lg btn-primary" value="Send request">
+          <p>In the next step you will decide how much money to send.
+
+
+      </p>
+
+        <input type="submit" class="btn btn-lg btn-success" value="Send request">
       </form>
     </div>
   </div>

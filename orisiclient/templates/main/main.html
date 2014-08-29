@@ -9,14 +9,17 @@
     }
   }
 </style>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="jumbotron center">
-      <h1 class="center">Orisi Online Client</h1>
-      <p class="center">Check how Orisi works without installing anything!</p>
-      <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Get Started</a>
-      <p class="center">.. or <a href="{% url 'main:faq' %}">learn more</a>...</p>
-    </div>
-  </div>
+
+<div class="jumbotron row text-center center">
+
+
+      <h1>TimeLock Smart Contract</h1>
+      <h2>Powered by Orisi Oracles</h2>
+      <p class="lead">Check how Smart Contracts works without installing anything!</p>
+
+    <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-success">Get Started</a>
+      <p>or <a href="{% url 'main:faq' %}">learn more</a></p>
+
+
 </div>
 {% endblock %}
