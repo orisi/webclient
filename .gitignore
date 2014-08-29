@@ -3,3 +3,5 @@
 */settings_local.py
 CACHE
 deploy.sh
+.idea/
+*~
