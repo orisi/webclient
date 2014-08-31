@@ -27,12 +27,14 @@
           </div>
         </div>
       </div>
-      <div id="afterSuccess" style="display:none;" class="center">
+      <div id="afterSuccess" style="display:none;" class="center text-center">
         <h1>Timelock Created!</h1>
         <hr>
-        <p>Please send your timelock money on <span id="address" class="strong"></span>.</p>
+        <p>Please send your timelock money to <B><span id="address" class="strong"></span></B>.</p>
         <p>You need to send amount ending with <span class="tx_mark strong"></span>. For example:
-        <b>0.1000<span class="tx_mark"></span></b>. That way we recognize this transaction from many others you may schedule.</p>
+        <b>0.00500<span class="tx_mark"></span></b>. That way we can recognize this transaction from many others you may schedule.
+        Use calculator below to get the amount you need to send.
+        </p>
         <hr>
         <h2>How much would you like to send?</h2>
         <div class="row">
@@ -45,20 +47,21 @@
 
           <div class="row">
             <div class="text-center">
-              <p style="font-size: 43px; color: gray;">
+              <p style="font-size: 60px; color: gray;">
               <span class="glyphicon glyphicon-arrow-down"></span>
               </p>
             </div></div>
 
           <div class="row">
             <div class="form-group" style="margin-top:5px;">
-              <input id="secondInput" class="form-control" min=0 placeholder="How much should you send" type="number" step="0.00000001" readonly="True"/>
+              <input style="background-color: navajowhite; color: forestgreen" id="secondInput" class="form-control" min=0 placeholder="How much should you send" type="number" readonly="True"/>
             </div>
           </div>
 
 
-
-        <p>Oracles will wait for your transaction for no more than <b>30</b> minutes</p>
+      <div class="text-center">
+        <p>Oracles will wait for your transaction for no more than <b>30 minutes</b>. This means we will delete this contract when there is no initial transaction.</p>
+      </div>
       </div>
       <div id="afterFailure" style="display:none;" class="center">
         <h2>Please use different address</h2>
