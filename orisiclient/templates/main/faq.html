@@ -6,13 +6,36 @@
 <div class="row">
 
     <div class="col-xs-12 well">
-    <h1>1. What is Orisi</h1>
-    <p>Orisi is an idea of Distributed Oracle system, read more at <a href="http://orisi.org/">Orisi.org</a></p>
+    <h1>0. What is Orisi</h1>
+    <p>Orisi is an idea of Distributed Oracle system, read more at <a href="http://orisi.org/">Orisi.org</a>
+    This site has been built for educational purposes.
+    </p>
+   </div>
+
+   <div class="col-xs-12 well">
+    <h1>1. What is Timelock</h1>
+    <p>Timelock smart contract works like this:
+        You send money to multisig address,
+        it stays there for the time(minutes) defined by you and get back to you on right after this specified time.
+
+    </p>
+       <p>It would be just a simple web service but the difference here is that you transaction is being <B>signed by independent oracles only after they agree that the time has passed</B>. Those Oracles are hidden in the safe locations, without access to the public internet besides Fastcast boradcasting service that handles communication between clients and oracles.</p>
+
+       <P>You can connect to <A href="http://hub.orisi.org"> see ALL THE MESSAGES that are being sent through the Fastcast network.</A> or fetch them using REST API and verify how it all works.</P>
+
+       <P>You are not meant to earn anything, in fact you will probably loose ~1mBTC just to try it.</P>
+   </div>
+
+
+
+    <div class="col-xs-12 well">
+    <h1>2. What are the requirements to use this?</h1>
+    <p>You need to know how to send bitcoins.</p>
    </div>
 
   
   <div class="col-xs-12 well">
-    <h1>2. Who owns oracles?</h1>
+    <h1>3. Who owns oracles?</h1>
     <p>We do. Meaning <a href="http://twitter.com/gricha_91">@gricha_91</A>, <a href="http://twitter.com/83tb">@83TB</a>, <a href="http://twitter.com/kolinko">@kolinko</a>. Developers of Orisi. For now. Because this just a demo and a test site, it does not really matter. We do care for this project to succeed
       and this why you can trust us with small amounts of money for testing purposes. You can <A href="https://github.com/orisi/oracle">run your own Oracle or even set of Oracles if you want. In fact, we encourage you to do so. It's open source.</A>
     
@@ -20,31 +43,31 @@
   </div>
   
   <div class="col-xs-12 well">
-    <h1>3. Where are oracles?</h1>
+    <h1>4. Where are oracles?</h1>
     <p>They are hidden, to be more secure, at the same time they are signing all their communication and transactions so you are sure it's them who's taking care of you money.
     </p>
   </div>
   
   <div class="col-xs-12 well">
-    <h1>4. How does it work?</h1>
+    <h1>5. How does it work?</h1>
   <iframe width="420" height="315" src="//www.youtube.com/embed/boPW1FwNu4c" frameborder="0" allowfullscreen></iframe>
   </div>
   
   <div class="col-xs-12 well">
-    <h1>5. Can I use this site to "timelock" huge amounts of Bitcoins?</h1>
- <p>Please, don't. This is just a demo site, working on the alpha version of the Orisi code. It's safe to send few milibtc through it, but don't risk sending more.</p> </div>
+    <h1>6. Can I use this site to "timelock" huge amounts of Bitcoins?</h1>
+ <p>Please, don't. This is just a demo site, working on the alpha version of the Orisi code. It's safe to send a few milibtc through it, but don't risk sending more.</p> </div>
 </div>
 
  <div class="col-xs-12 well">
-    <h1>6. For how long should I set the timelock?</h1>
+    <h1>7. For how long should I set the timelock?</h1>
  <p>
- Setting timelock time for less than 15 minutes is probably ineffective, the fastest time we have achieved with the whole contract to finish was 16 minutes.
+ Setting timelock time for less than 15 minutes is probably ineffective, the fastest time we have achieved with the whole contract to finish was 16 minutes(timelock = "1 minute").
  For now do not set it to more than 48 hours. We reserve a right to take down this site with 1 week notice.</p> </div>
 
 
 
      <div class="col-xs-12 well">
-    <h1>7. How much does it costs?</h1>
+    <h1>8. How much does it costs?</h1>
  <p>
  Each Oracle is charging 0.0003 BTC for arbitraging your smart contract.
 
