@@ -30,7 +30,7 @@
       <div id="afterSuccess" style="display:none;" class="center text-center">
         <h1>Timelock Created!</h1>
         <hr>
-        <p>Please send your timelock money to <B><span id="address" class="strong"></span></B>.</p>
+        <p>Please send your timelock money to <B><span class="address" class="strong"></span></B>.</p>
         <p>You need to send amount ending with <span class="tx_mark strong"></span>. For example:
         <b>0.00500<span class="tx_mark"></span></b>. That way we can recognize this transaction from many others you may schedule.
         Use calculator below to get the amount you need to send.
@@ -68,14 +68,77 @@
         <p>You have used this address for previous contract, please use another return address.</p>
         <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Create New</a>
       </div>
+      <div id="liveMonitoring" style="display:none;">
+        <hr>
+        <h2>Monitoring <span class="address"></span> for mark <span class="tx_mark"></span></h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Txid</th>
+              <th>Confirmations</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody id="liveTable">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
 
+function updateView(results) {
+  htmlLines = [];
+  for (txid in results) {
+    transaction = results[txid];
+    shortTx = txid.substring(0, 30) + "...";
+    line = [
+      '<tr>',
+      '<td><a href="http://btc.blockr.io/tx/info/' + txid + '">' + shortTx + '</a></td>',
+      '<td>' + transaction['confirmations'] + '</td>',
+      '<td>' + transaction['amount'] + '</td>',
+      '</tr>'
+        ].join('\n');
+    htmlLines.push(line);
+  }
+  $('#liveTable').html(htmlLines.join('\n'));
+}
+
+function monitorResults(btc, address) {
+  results = btc.getResults();
+  address_results = results[address];
+
+  var new_results = {}
+  for (k in address_results) {
+    r = address_results[k];
+    final_vout = undefined;
+    for (var j = 0; j < r['trade']['vouts'].length; ++j) {
+      vout = r['trade']['vouts'][j];
+      if (vout['address'] == address) {
+        final_vout = vout;
+      }
+    }
+    r['amount'] = final_vout['amount'];
+    new_results[k] = r;
+  }
+
+  updateView(new_results);
+}
+
+function startObserving(address, mark) {
+  var btc = btcMonitor();
+  var actualDate = new Date();
+  var oldDate = new Date(actualDate.getTime() - 6000000);
+  btc.addObservedByMark(address, mark, oldDate);
+
+  btc.run();
+
+  setInterval(monitorResults.bind(undefined, btc, address), 1000);
+}
+
 function checkResults(results) {
-  console.log(results);
   if (results['result'] == 'success') {
     clearInterval(tt);
 
@@ -95,7 +158,9 @@ function checkResults(results) {
 
       mark = prefix + mark;
 
-      $('#address').html(address);
+      $('.address').each(function(){
+          $(this).html(address);
+      });
       $('.tx_mark').each(function(){
           $(this).html(mark);
       });
@@ -104,8 +169,6 @@ function checkResults(results) {
       $('#firstInput').on('input', function(){
         value = $(this).val();
         if (value) {
-          console.log(typeof(value));
-          console.log(parseFloat(value).toFixed(4));
           sendAmount = parseFloat(value).toFixed(4);
           $('#secondInput').val(sendAmount + mark);
         }
@@ -113,6 +176,9 @@ function checkResults(results) {
 
       $('#before').remove();
       $('#afterSuccess').css('display', 'block');
+      $('#liveMonitoring').css('display', 'block');
+
+      startObserving(address, mark);
     } else {
       $('#before').remove();
       $('#afterFailure').css('display', 'block');

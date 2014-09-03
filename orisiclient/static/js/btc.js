@@ -35,93 +35,91 @@
     return resultingList;
   }
 
-  var btc_parseTransaction = function(data) {
+  var btc_parseTxData = function(address, transaction) {
+    var txid = transaction['tx'];
+    if (btc_filterFunctionForAddress[address](address, transaction)) {
+      btc_alwaysCheckTransactions[txid] = true;
+      if (transaction['confirmations'] == 0) {
+        btc_waitingRequests.push({
+          dataType: 'json',
+          url: 'http://btc.blockr.io/api/v1/zerotx/info/' + txid,
+          data: {format:'json',cors:true},
+          crossDomain:true,
+          success: btc_parseTransaction.bind(undefined, address),
+          error: btc_logError,
+        });
+      } else {
+        btc_waitingRequests.push({
+          dataType: 'json',
+          url: 'http://btc.blockr.io/api/v1/tx/info/' + txid,
+          data: {format:'json',cors:true},
+          crossDomain:true,
+          success: btc_parseTransaction.bind(undefined, address),
+          error: btc_logError,
+        });
+      }
+
+    }
+  }
+
+  var btc_parseTransaction = function(address, data) {
     if (data['status'] != 'success') {
       return;
     }
 
     data = data['data'];
-
-    trade = data['trade'];
-    vouts = trade['vouts'];
-    for (var i=0; i < vouts.length; ++i) {
-      vout = vouts[i]
-      if (vout['address'] in btc_observedAddresses) {
-        if (btc_filterFunctionForAddress[vout['address']](data)) {
-          btc_alwaysCheckTransactions[data['tx']] = true;
-          btc_observedAddresses[vout['address']].push(data);
-        }
-      }
-    }
-
-    btc_alreadySeenTransactions[data['tx']] = true;
+    btc_observedAddresses[address][data['tx']] = data;
   }
 
   var btc_logError = function(data) {
     console.log(data);
   }
 
-  var btc_investigateTransaction = function(tx) {
-    btc_waitingRequests.push({
-      dataType: 'json',
-      url: 'http://btc.blockr.io/api/v1/tx/info/' + tx['tx'],
-      data: {format:'json',cors:true},
-      crossDomain:true,
-      success: btc_parseTransaction,
-      error: btc_logError,
-    });
-  }
-
   // Please partially apply address
-  var btc_parseLastTransactions = function(data, textStatus, jqXHR, address) {
+  var btc_parseLastTransactions = function(address, data) {
     if (typeof(address) === "undefined") {
       console.log("Please partially apply address!");
       return;
     }
-
-    console.log(data);
-    console.log(textStatus);
-    console.log(jqXHR);
 
     if (data['status'] != 'success') {
       return;
     }
 
     data = data['data'];
-    pre_transactions = data['txs'];
-    transactions = []
+    transactions = data['unspent'];
 
     // We don't need too old transactions
-    minimalDate = btc_dateForAddress[address];
-    for (var i=0; i < pre_transactions.length; ++i) {
-      txDate = new Date(pre_transactions[i]['time_utc']);
-      if (txDate >= minimalDate) {
-        transactions.push(pre_transactions[i]);
-      }
-    }
+    //minimalDate = btc_dateForAddress[address];
+    //for (var i=0; i < pre_transactions.length; ++i) {
+    //  txDate = new Date(pre_transactions[i]['time_utc']);
+    //  if (txDate >= minimalDate) {
+    //    transactions.push(pre_transactions[i]);
+    //  }
+    //}
 
     transactions = btc_filterTransactions(transactions);
 
     for (var i = 0; i < transactions.length; ++i) {
-      btc_investigateTransaction(transactions[i]);
+      //btc_investigateTransaction(transactions[i]);
+      btc_parseTxData(address, transactions[i]);
     }
   }
 
   var btc_getLastTransactions = function(address) {
-    console.log(btc_parseLastTransactions.bind(undefined, undefined, undefined, address));
     btc_waitingRequests.push({
       dataType: 'json',
-      url: 'http://btc.blockr.io/api/v1/address/txs/' + address,
+      url: 'http://btc.blockr.io/api/v1/address/unspent/' + address +'?unconfirmed=1&multisigs=1',
       data: {format:'json','limit':5, cors:true},
       crossDomain:true,
-      success: btc_parseLastTransactions.bind(undefined, undefined, undefined, address)
+      success: btc_parseLastTransactions.bind(undefined, address)
     });
   }
 
 
   var btc_addObservedAddress = function(address, filterFunction, minimumDate) {
     btc_filterFunctionForAddress[address] = filterFunction;
-    btc_observedAddresses[address] = []
+    btc_observedAddresses[address] = {}
     btc_dateForAddress[address] = minimumDate
   }
 
@@ -155,21 +153,27 @@
   var btc_getMarkFunction = function(address, mark) {
     var myMark = mark;
     var myAddress = address;
-    var markFunction = function(data) {
-      trade = data['trade'];
-      vouts = trade['vouts'];
-      for (var i=0; i < vouts.length; ++i) {
-        vout = vouts[i];
-        if (vout['address'] == myAddress) {
-          valueFloat = vout['amount'];
-          valueString = valueFloat.toFixed(8);
-          foundMark = valueString.substr(valueString.length - 4);
-          if (foundMark == myMark) {
-            return true;
-          }
-        }
-      }
-      return false;
+    //var markFunction = function(data) {
+    //  trade = data['trade'];
+    //  vouts = trade['vouts'];
+    //  for (var i=0; i < vouts.length; ++i) {
+    //    vout = vouts[i];
+    //    if (vout['address'] == myAddress) {
+    //      valueFloat = vout['amount'];
+    //      valueString = valueFloat.toFixed(8);
+    //      foundMark = valueString.substr(valueString.length - 4);
+    //      if (foundMark == myMark) {
+    //        return true;
+    //      }
+    //    }
+    //  }
+    //  return false;
+    //}
+    var markFunction = function(address, data) {
+      valueString = data['amount'];
+      foundMark = valueString.substr(valueString.length - 4);
+      if (foundMark == myMark && address == myAddress)
+        return true;
     }
     return markFunction;
   }
