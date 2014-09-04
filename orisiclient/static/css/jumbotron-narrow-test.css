@@ -83,24 +83,3 @@ body {
 }
 
 
-#ajaxloader
-{
-	position: absolute;
-	width: 30px;
-	height: 30px;
-	border: 8px solid #fff;
-	border-right-color: transparent;
-	border-radius: 50%;
-	box-shadow: 0 0 25px 2px #eee;
-    animation: spin 1s linear infinite;
-}
-
-
-@keyframes spin
-{
-	from { transform: rotate(0deg);   opacity: 0.2; }
-	50%  { transform: rotate(180deg); opacity: 1.0; }
-	to   { transform: rotate(360deg); opacity: 0.2; }
-}
-
-
