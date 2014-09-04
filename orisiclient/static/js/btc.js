@@ -101,7 +101,6 @@
     transactions = btc_filterTransactions(transactions);
 
     for (var i = 0; i < transactions.length; ++i) {
-      //btc_investigateTransaction(transactions[i]);
       btc_parseTxData(address, transactions[i]);
     }
   }
@@ -109,8 +108,8 @@
   var btc_getLastTransactions = function(address) {
     btc_waitingRequests.push({
       dataType: 'json',
-      url: 'http://btc.blockr.io/api/v1/address/unspent/' + address +'?unconfirmed=1&multisigs=1',
-      data: {format:'json','limit':5, cors:true},
+      url: 'http://btc.blockr.io/api/v1/address/unspent/' + address,
+      data: {format:'json','limit':5, cors:true, unconfirmed:1, multisigs:1},
       crossDomain:true,
       success: btc_parseLastTransactions.bind(undefined, address)
     });
