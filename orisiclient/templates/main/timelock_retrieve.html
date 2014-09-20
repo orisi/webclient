@@ -95,6 +95,19 @@
 
               If you haven't done it already, now it's time to go to your wallet and send your "timelock" money. After we receive a confirmation you will see your transaction coming in below.
 
+
+        <h2>Oracle's communication</h2>
+          <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>Oracle</td>
+              <td>Operation</td>
+            </tr>
+          </thead>
+          <tbody id="liveTable2">
+          </tbody>
+        </table>
+
               <h2> Monitoring Blockchain for your transaction </h2>
 <canvas width="27" height="27" id="myCanvas"></canvas>
              <div>address: <span class="address"></span></div>
@@ -117,6 +130,7 @@
 
 <script type="text/javascript">
 
+
 function updateView(results) {
   htmlLines = [];
   for (txid in results) {
@@ -132,6 +146,50 @@ function updateView(results) {
     htmlLines.push(line);
   }
   $('#liveTable').html(htmlLines.join('\n'));
+}
+
+function hash(str) {
+  var hash = 0, i, chr, len;
+  if (str.length == 0) return hash;
+  for (i = 0, len = str.length; i < len; i++) {
+    chr   = str.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0;
+  }
+  return hash;
+};
+
+hashCode = function(s){
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+}
+
+function monitorOrisiResults(orisi, contract_id) {
+  results = orisi.getResults();
+
+  results = results[contract_id];
+
+  htmlLines = new Array();
+
+  operations = {
+    'safe_timelock_created': 'Waiting for transaction',
+    'safe_timelock_signed': 'Transaction signed',
+    'safe_timelock_found_transaction': 'Funds locked',
+    'safe_timelock_released_mark': 'No longer waiting for transactions',
+  }
+
+  for (var i=0; i<results.length; ++i) {
+    result = results[i];
+    from = hashCode(result['source']);
+
+    line = [
+      '<tr>',
+      '<td> ' + from + ' </td>',
+      '<td> ' + operations[result['operation']] + ' </td>',
+    '</tr>',
+    ].join('\n');
+    htmlLines.push(line);
+  }
+  $('#liveTable2').html(htmlLines.join('\n'));
 }
 
 function monitorResults(btc, address) {
@@ -166,6 +224,14 @@ function startObserving(address, mark) {
   setInterval(monitorResults.bind(undefined, btc, address), 1000);
 }
 
+function startObservingOracles(address) {
+  var orisi = orisiMonitor();
+  orisi.addContract(address + "#" + mark);
+  orisi.run();
+
+  setInterval(monitorOrisiResults.bind(undefined, orisi, address + "#" + mark), 1000);
+}
+
 function checkResults(results) {
   if (results['result'] == 'success') {
     clearInterval(tt);
@@ -193,6 +259,8 @@ function checkResults(results) {
           $(this).html(mark);
       });
       $('#time').html(time);
+
+      startObservingOracles(address);
 
       $('#firstInput').on('input', function(){
         value = $(this).val();
