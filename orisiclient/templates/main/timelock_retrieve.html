@@ -29,104 +29,136 @@
   @media (min-width: 768px) {
     .container {
       width:100%;
-      max-width: 730px;
+      max-width: 1730px;
     }
   }
 </style>
+
+
+
+
+<div class="container"
 <div class="row">
-  <div class="col-xs-12">
-    <div class="jumbotron">
-      <div id="before" class="center">
-        <h2>Creating timelock...</h2>
-        <p>Waiting for Oracles to respond</p>
-        <div class="results">
-          <div id="circleG">
-            <div id="circleG_1" class="circleG">
+            <div id="before">
+
+
+
+                <h2>Creating timelock...</h2>
+                <p>Waiting for Oracles to respond</p>
+
+                <div class="results">
+                    <div id="circleG">
+                        <div id="circleG_1" class="circleG"></div>
+                        <div id="circleG_2" class="circleG"></div>
+                        <div id="circleG_3" class="circleG"></div>
+                    </div>
+                </div>
             </div>
-            <div id="circleG_2" class="circleG">
+
+            <div id="afterSuccess" style="display:none;" class="center text-center">
+
+
+           <div class="col-md-6">
+            <h1>Timelock Created!</h1>
+            <hr>
+            <p>Please send your timelock money to <B><span class="address" class="strong"></span></B>.</p>
+            <p>You need to send amount ending with <span class="tx_mark strong"></span>
+                satoshi.
+        
+            For example:
+            <b>0.0015<span class="tx_mark"> BTC</span></b>. That way Oracles can recognize this transaction from many others you may schedule.
+            Use calculator below to get the amount you need to send.
+            </p>
+            <hr>
+        
+            <h2>How much would you like to send?</h2>
+            <div class="row">
+
+                <div class="form-group" style="margin-top:5px;">
+                    <input id="firstInput" class="form-control" min=0 placeholder="Amount in BTC" type="number" step="0.00000001"/>
+                </div>
+
             </div>
-            <div id="circleG_3" class="circleG">
+
+            <div class="row">
+                <div class="text-center">
+                    <p style="font-size: 60px; color: gray;">
+                    <span class="glyphicon glyphicon-arrow-down"></span></p>
+                </div>
             </div>
-          </div>
+
+            <div class="row">
+                <div class="form-group" style="margin-top:5px;">
+                    <input style="background-color: navajowhite; color: forestgreen" id="secondInput" class="form-control" min=0 placeholder="How much should you send" type="number" readonly="True"/>
+                </div>
+            </div>
+
+
+            <div class="">
+                <p>Oracles will wait for your transaction for no more than <b>2 hours</b>
+                </p>
+            </div>
         </div>
-      </div>
-      <div id="afterSuccess" style="display:none;" class="center text-center">
-        <h1>Timelock Created!</h1>
-        <hr>
-        <p>Please send your timelock money to <B><span class="address" class="strong"></span></B>.</p>
-        <p>You need to send amount ending with <span class="tx_mark strong"></span>. For example:
-        <b>0.00500<span class="tx_mark"></span></b>. That way we can recognize this transaction from many others you may schedule.
-        Use calculator below to get the amount you need to send.
-        </p>
-        <hr>
-        <h2>How much would you like to send?</h2>
-        <div class="row">
-
-            <div class="form-group" style="margin-top:5px;"> 
-              <input id="firstInput" class="form-control" min=0 placeholder="Amount in BTC" type="number" step="0.00000001"/>
-            </div>
-
+        <div id="afterFailure" style="display:none;" >
+            <h2>Please use different address</h2>
+            <p>You have used this address for previous contract, please use another return address.</p>
+            <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Create New</a>
         </div>
 
-          <div class="row">
-            <div class="text-center">
-              <p style="font-size: 60px; color: gray;">
-              <span class="glyphicon glyphicon-arrow-down"></span>
-              </p>
-            </div></div>
 
-          <div class="row">
-            <div class="form-group" style="margin-top:5px;">
-              <input style="background-color: navajowhite; color: forestgreen" id="secondInput" class="form-control" min=0 placeholder="How much should you send" type="number" readonly="True"/>
+            <div class="col-md-6  ">
+
+
+
+            <h1>Watch Blockchain and Oracles Communicating</h1>
+
+
+
+
+            <table class="table table-striped ">
+                <thead>
+                    <TR> Bitcoin Address: <span class="address"></span></TR>
+
+
+                    <tr>
+                        <th>Txid</th>
+                        <th>Confirmations</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody id="liveTable">
+                </tbody>
+            </table>
+
+
+
+
+
+                <table class="table table-striped ">
+                    <thead>
+                         <TR>Fastcast Stream</TR>
+                        <tr>
+                            <td>Oracle</td>
+                            <td>Operation</td>
+                        </tr>
+                    </thead>
+                    <tbody id="liveTable2">
+                    </tbody>
+                </table>
+
+
+
+ <IMG SRC="https://blockchain.info/qr?data=36Nt2qWPPxmd4iBN6Dw9wfS2Xf853aVi55&size=200"></IMG>
+
             </div>
-          </div>
+
+</DIV>
 
 
-      <div class="text-center">
-        <p>Oracles will wait for your transaction for no more than <b>30 minutes</b>. This means we will delete this contract when there is no initial transaction.</p>
-      </div>
-      </div>
-      <div id="afterFailure" style="display:none;" class="center">
-        <h2>Please use different address</h2>
-        <p>You have used this address for previous contract, please use another return address.</p>
-        <a href="{% url 'main:timelock' %}" class="btn btn-lg btn-primary">Create New</a>
-      </div>
-      <div class="text-center" id="liveMonitoring" style="display:none;">
-
-              If you haven't done it already, now it's time to go to your wallet and send your "timelock" money. After we receive a confirmation you will see your transaction coming in below.
 
 
-        <h2>Oracle's communication</h2>
-          <table class="table table-striped">
-          <thead>
-            <tr>
-              <td>Oracle</td>
-              <td>Operation</td>
-            </tr>
-          </thead>
-          <tbody id="liveTable2">
-          </tbody>
-        </table>
 
-              <h2> Monitoring Blockchain for your transaction </h2>
-<canvas width="27" height="27" id="myCanvas"></canvas>
-             <div>address: <span class="address"></span></div>
-
-          <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Txid</th>
-              <th>Confirmations</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody id="liveTable">
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script type="text/javascript">
 

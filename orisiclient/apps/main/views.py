@@ -88,6 +88,7 @@ class TimelockRetrieveView(TemplateView):
     ta = TimelockAddress.objects.filter(pub=pub).order_by('-ts')[0]
     context['ta'] = ta
 
+
     return context
 
   def get(self, *args, **kwargs):
