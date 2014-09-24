@@ -25,9 +25,13 @@
     for (var i=0; i<results.length; ++i) {
       result = results[i];
 
+
+
       if (result['contract_id'] in orisi_contracts) {
         interestingMessages.push(result);
       }
+
+
     }
 
     return interestingMessages;

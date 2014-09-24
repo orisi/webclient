@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div id="afterSuccess" style="display:none;" class="center text-center">
+            <div id="afterSuccess" style="display:none;">
 
 
            <div class="col-md-6">
@@ -113,14 +113,14 @@
 
 
 
-            <h1>Watch Blockchain and Oracles Communicating</h1>
+            <h1>Blockchain & Oracles</h1>
 
 
 
 
             <table class="table table-striped ">
                 <thead>
-                    <TR> Bitcoin Address: <span class="address"></span></TR>
+                    <TR> Watching bitcoin address: <span class="address"></span></TR>
 
 
                     <tr>
@@ -134,22 +134,27 @@
                 </tbody>
             </table>
 
-
-
-                <BR><BR><BR>
+<BR>
+                 <canvas width="27" height="27" id="myCanvas"></canvas>
+                <BR>
 
 
                 <table class="table table-striped ">
                     <thead>
-                         <TR>Fastcast Stream</TR>
+                         <TR>Live stream of messages concerning this smart contract</TR>
                         <tr>
-                            <td>Oracle</td>
-                            <td>Operation</td>
+                            <td>Oracle name</td>
+                            <td>Operation type</td>
                         </tr>
                     </thead>
                     <tbody id="liveTable2">
                     </tbody>
                 </table>
+
+
+
+            <DIV>You transaction is being signed by independent oracles only after they agree that the time has passed.
+                    </DIV>
 
 
 
@@ -215,6 +220,11 @@ function monitorOrisiResults(orisi, contract_id) {
   for (var i=0; i<results.length; ++i) {
     result = results[i];
     from = hashCode(result['source']);
+    if (from == -534256652) { from = "<STRONG>@83TB</STRONG> <BR> [ Hosted by Kuba Kucharski ]";}
+    if (from == -1088891260) { from = "<STRONG>@Kolinko</STRONG> <BR> [ Hosted by Tomek Kolinko ]";}
+    if (from == -510084153) { from = "<STRONG>@Gricha_91</STRONG> <BR> [ Hosted by Grzegorz Pstrucha ]";}
+
+
 
     line = [
       '<tr>',
