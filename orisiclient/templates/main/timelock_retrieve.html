@@ -59,8 +59,8 @@
 
 
            <div class="col-md-6">
-            <h1>Timelock Created!</h1>
-            <hr>
+            <h2>Timelock Created!</h2>
+
             <p>Please send your timelock money to <B><span class="address" class="strong"></span></B>.</p>
             <p>You need to send amount ending with <span class="tx_mark strong"></span>
                 satoshi.
@@ -69,9 +69,9 @@
             <b>0.0015<span class="tx_mark"> BTC</span></b>. That way Oracles can recognize this transaction from many others you may schedule.
             Use calculator below to get the amount you need to send.
             </p>
-            <hr>
+
         
-            <h2>How much would you like to send?</h2>
+            <h3>How much would you like to send?</h3>
             <div class="row">
 
                 <div class="form-group" style="margin-top:5px;">
@@ -80,12 +80,12 @@
 
             </div>
 
-            <div class="row">
-                <div class="text-center">
+
+                <div class="row text-center">
                     <p style="font-size: 60px; color: gray;">
-                    <span class="glyphicon glyphicon-arrow-down"></span></p>
+                    <span class="glyphicon glyphicon-chevron-down"></span></p>
                 </div>
-            </div>
+
 
             <div class="row">
                 <div class="form-group" style="margin-top:5px;">
@@ -98,6 +98,8 @@
 
 
                 <BR>
+                <P>You transaction is being signed by independent oracles only after they agree that the time has passed.
+                </P>
                 <p>Oracles will wait for your transaction for no more than <b>2 hours</b>
                 </p>
             </div>
@@ -113,14 +115,14 @@
 
 
 
-            <h1>Blockchain & Oracles</h1>
+            <h2>Blockchain & Oracles</h2>
 
 
 
 
             <table class="table table-striped ">
                 <thead>
-                    <TR> Watching bitcoin address: <span class="address"></span></TR>
+                    <TR>Blockchain | Watching bitcoin address: <span class="address"></span></TR>
 
 
                     <tr>
@@ -141,7 +143,7 @@
 
                 <table class="table table-striped ">
                     <thead>
-                         <TR>Live stream of messages concerning this smart contract</TR>
+                         <TR>Live | Oracles in charge of this smart contract</TR>
                         <tr>
                             <td>Oracle name</td>
                             <td>Operation type</td>
@@ -153,8 +155,7 @@
 
 
 
-            <DIV>You transaction is being signed by independent oracles only after they agree that the time has passed.
-                    </DIV>
+
 
 
 
@@ -217,12 +218,22 @@ function monitorOrisiResults(orisi, contract_id) {
     'safe_timelock_released_mark': 'No longer waiting for transactions',
   }
 
+
+  var was83tb = "False";
+  var waskolinko = "False";
+  var wasgricha = "False";
+
   for (var i=0; i<results.length; ++i) {
     result = results[i];
     from = hashCode(result['source']);
-    if (from == -534256652) { from = "<STRONG>@83TB</STRONG> <BR> [ Hosted by Kuba Kucharski ]";}
-    if (from == -1088891260) { from = "<STRONG>@Kolinko</STRONG> <BR> [ Hosted by Tomek Kolinko ]";}
-    if (from == -510084153) { from = "<STRONG>@Gricha_91</STRONG> <BR> [ Hosted by Grzegorz Pstrucha ]";}
+
+
+
+
+    if (from == -534256652) { from = "<STRONG>@83TB</STRONG> <BR> [ Hosted by Kuba Kucharski ]"; was83tb = "True";}
+    if (from == -1088891260) { from = "<STRONG>@Kolinko</STRONG> <BR> [ Hosted by Tomek Kolinko ]"; waskolinko = "True";}
+    if (from == -510084153) { from = "<STRONG>@Gricha_91</STRONG> <BR> [ Hosted by Grzegorz Pstrucha ]"; wasgricha = "True";}
+
 
 
 
@@ -233,7 +244,48 @@ function monitorOrisiResults(orisi, contract_id) {
     '</tr>',
     ].join('\n');
     htmlLines.push(line);
+
+
+
+
+
+
+
   }
+
+  if ( wasgricha == "False") {
+        line_g = [
+      '<tr>',
+            '<td> <STRONG>@GRICHA_91</STRONG> <BR> [ Hosted by Grzegorz Pstrucha ]</td>',
+      '<td> OFFLINE </td>',
+    '</tr>',
+    ].join('\n');
+    htmlLines.push(line_g);
+
+    }
+
+  if ( was83tb == "False") {
+        line_g = [
+      '<tr>',
+            '<td> <STRONG>@83TB</STRONG> <BR> [ Hosted by Kuba Kucharski ]</td>',
+      '<td> OFFLINE </td>',
+    '</tr>',
+    ].join('\n');
+    htmlLines.push(line_g);
+
+    }
+
+  if ( waskolinko == "False") {
+        line_g = [
+      '<tr>',
+            '<td> <STRONG>@KOLINKO</STRONG> <BR> [ Hosted by Tomek Kolinko ]</td>',
+      '<td> OFFLINE </td>',
+    '</tr>',
+    ].join('\n');
+    htmlLines.push(line_g);
+
+    }
+
   $('#liveTable2').html(htmlLines.join('\n'));
 }
 
