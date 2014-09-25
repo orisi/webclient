@@ -88,6 +88,7 @@ class TimelockRetrieveView(TemplateView):
     ta = TimelockAddress.objects.filter(pub=pub).order_by('-ts')[0]
     context['ta'] = ta
 
+    context['locktime'] = ta.locktime
 
     return context
 
@@ -144,7 +145,8 @@ class TimelockView(FormView):
     ta = TimelockAddress(
         address = return_address,
         pub = pub,
-        message_id = request['message_id'])
+        message_id = request['message_id'],
+        locktime = form.cleaned_data['locktime'])
     ta.save()
 
     request['pubkey_list'] = key_list

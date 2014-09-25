@@ -7,3 +7,4 @@ class TimelockAddress(models.Model):
   address = models.CharField(max_length=255)
   message_id = models.CharField(max_length=255)
   pub = models.CharField(max_length=1024)
+  locktime = models.IntegerField()
