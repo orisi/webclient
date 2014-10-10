@@ -75,7 +75,7 @@
             <div class="row">
 
                 <div class="form-group" style="margin-top:5px;">
-                    <input id="firstInput" class="form-control" min=0 placeholder="Amount in BTC" type="number" step="0.00000001"/>
+                    <input id="firstInput" class="form-control" min=0.0001 placeholder="Amount in BTC" type="number" step="0.0001" value="0.0002"/>
                 </div>
 
             </div>
@@ -89,7 +89,7 @@
 
             <div class="row">
                 <div class="form-group" style="margin-top:5px;">
-                    <input style="background-color: navajowhite; color: forestgreen" id="secondInput" class="form-control" min=0 placeholder="How much should you send" type="number" readonly="True"/>
+                    <input style="background-color: navajowhite; color: forestgreen" id="secondInput" class="form-control" min=0 placeholder="How much should you send" readonly="True"/>
                 </div>
             </div>
 
@@ -359,11 +359,21 @@ function checkResults(results) {
 
       startObservingOracles(address);
 
+      sendAmount = parseFloat($('#firstInput').val()).toFixed(4);
+      $('#secondInput').val(sendAmount + mark);
+
+
       $('#firstInput').on('input', function(){
         value = $(this).val();
         if (value) {
           sendAmount = parseFloat(value).toFixed(4);
-          $('#secondInput').val(sendAmount + mark);
+          if (sendAmount<0.0001) {
+            $('#secondInput').val('The miminum amount is 0.0001 BTC')
+          } else if (sendAmount>0.05) {
+              $('#secondInput').val('This is a test system. Please don\'t send anything above 0.05.')
+          } else {
+            $('#secondInput').val(sendAmount + mark);
+          };
         }
       });
 
